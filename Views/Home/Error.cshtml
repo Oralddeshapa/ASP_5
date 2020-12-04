@@ -1,0 +1,27 @@
+﻿@model ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<h1 class="text-danger">Error.</h1>
+<h2 class="text-danger">An error occurred while processing your request.</h2>
+
+@if (Model.ShowRequestId)
+{
+    <p>
+        <strong>Status code:</strong> <code>@Model.RequestId</code>
+    </p>
+}
+<br>
+
+<h3> <strong>Request ID:</strong> <code>@Model.SratusCode</code></h3>
+<h4>
+    Currently there is no page with id you just typed or tryed to access. Thx for testing but please return
+    <a class="text-danger" asp-controller="Home" asp-action="Index">Home</a> or you will face serious consequences.
+</h4>
+<br /><br /><br />
+<h7>
+    Also you can contact developer by <strong>fakepochatok@gmail.com</strong>
+</h7>
+
+

@@ -1,0 +1,71 @@
+﻿@model TeaChair.ViewModels.TeacherViewModel
+
+@{
+    ViewData["Title"] = "Throw points";
+}
+
+<h1>Donate</h1>
+<div>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ReleaseDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ReleaseDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Subject)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Subject)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.points)
+        </dt>
+        <dd class="col-sm-10" id="points">
+            @Html.DisplayFor(model => model.points)
+        </dd>
+    </dl>
+</div>
+<form method="post" asp-controller="Teachers" asp-action="Donate">
+    <div>
+        <div class="form-group">
+            <input type="hidden" asp-for="Name" id="name" />
+        </div>
+        <div class="form-group">
+            <input type="hidden" asp-for="ReleaseDate" />
+        </div>
+        <div class="form-group">
+            <input type="hidden" asp-for="Subject" id="subject" />
+        </div>
+        <div class="form-group">
+            <input type="hidden" asp-for="points" />
+        </div>
+        <div class="form-group">
+            <input type="hidden" asp-for="Tier" />
+        </div>
+        <input asp-for="New_points" type="number" /> <input id="signalR" type="submit">
+    </div>
+</form>
+<div>
+    <dl class="row">
+        <dt class="col-sm-2">
+            Your points
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Points_of_user)
+        </dd>
+    </dl>
+</div>
+<br />
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+<script src="~/jss/signalr/dist/browser/signalr.js"></script>
+<script src="~/jss/chat.js"></script>

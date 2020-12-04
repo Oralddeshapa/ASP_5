@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Title"] = "TeaChair";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="vertical-center">
+            <h3 class="text-black-50">
+                <a class="nav-link text-dark" asp-area="" asp-action="">@User.Identity.Name (you) </a>
+            </h3>
+            <div class="nav-item">
+                <form class="form-inline" asp-area="" asp-controller="Account" asp-action="Logout"
+                      asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                    <button type="submit" value="Submit">Logout</button>
+                </form>
+            </div>
+        </div>
+    }
+    else
+    {
+        <h3 class="nav-item">
+            <a class="nav-link text-dark" asp-controller="Account" asp-action="Register">Register</a>
+        </h3>
+        <h3 class="nav-item">
+            <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Login</a>
+        </h3>
+    }
+    <!--><a class="nav-link text-dark"((String)ViewData["time"])></a><!-->
+
+</div>

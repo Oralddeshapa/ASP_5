@@ -1,0 +1,31 @@
+﻿@model IEnumerable<TeaChair.Models.User>
+@{
+    ViewBag.Title = "Список пользователей";
+}
+@if (this.User.IsInRole("admin"))
+{
+    <a asp-action="Create">Add user</a>
+}
+
+    <table class="table">
+        <tr><th>Email</th><th>ID number</th><th></th></tr>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Email</td>
+                <td>@user.Points</td>
+                <td>
+                    @if (this.User.IsInRole("admin"))
+                    {
+                        <form asp-action="Delete" asp-route-id="@user.Id" method="post">
+                            <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-id="@user.Id">Modify</a>
+                            <a class="btn btn-sm btn-primary" asp-action="ChangePassword" asp-route-id="@user.Id">Change pass</a>
+                            <button type="submit" class="btn btn-sm btn-danger">
+                                Delete
+                            </button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </table>
