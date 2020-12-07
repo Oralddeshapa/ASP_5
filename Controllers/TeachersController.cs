@@ -73,9 +73,13 @@ namespace TeaChair.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(teacher);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var Class = _context.Classes.FirstOrDefault(m => m.Tier == teacher.Tier);
+                if (Class != null)
+                {
+                    _context.Add(teacher);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
             }
             return View(teacher);
         }
@@ -109,23 +113,28 @@ namespace TeaChair.Controllers
             {
                 return NotFound();
             }
+            
 
             if (ModelState.IsValid)
             {
-                try
+                var Class = _context.Classes.FirstOrDefault(m => m.Tier == teacher.Tier);
+                if (Class != null)
                 {
-                    _context.Update(teacher);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TeacherExists(teacher.Id))
+                    try
                     {
-                        return NotFound();
+                        _context.Update(teacher);
+                        await _context.SaveChangesAsync();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!TeacherExists(teacher.Id))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
                 }
                 return RedirectToAction(nameof(Index));
@@ -180,9 +189,6 @@ namespace TeaChair.Controllers
             var teacher = await _context.Teachers
                 .FirstOrDefaultAsync(m => m.Id == id);
 
-           // var cls = await _context.Classes
-                //.FirstOrDefaultAsync(m => m.Tier == teacher.Tier);
-
             TeacherViewModel tvm = new TeacherViewModel(teacher);
             if (teacher == null)
             {
@@ -193,7 +199,7 @@ namespace TeaChair.Controllers
 
             Mark_for_numb mfn = await _context.Grades.FirstOrDefaultAsync(o => o.Number == user.Points);
             
-            if(mfn != null)
+            if(mfn == null)
                 tvm.Points_of_user = -1;
             else
                 tvm.Points_of_user = mfn.Points;
@@ -209,12 +215,43 @@ namespace TeaChair.Controllers
 
             Mark_for_numb mfn = await _context.Grades.FirstOrDefaultAsync(o => o.Number == user.Points);
 
+            Class cls = await _context.Classes
+                .FirstOrDefaultAsync(m => m.Tier == tvm.Tier);
+
             if (mfn.Points > Math.Abs(tvm.New_points))
             {           
                 var users = _hubContext.Clients;
 
                 Teacher teacher = new Teacher(tvm);
                 mfn.Points -= Math.Abs(tvm.New_points);
+
+                ///----------------------------------------------------------------------------
+                var true_class = _context.Classes.Where(o => ((o.Min < teacher.points) && (o.Max > teacher.points))).First();
+
+                //await _context.Classes.FirstOrDefaultAsync(o => ((o.Min < user.Points) && (o.Max > user.Points)));
+                /*if (cls.Min > teacher.points)
+                {
+                    var array = _context.Classes.ToArray<Class>();
+                    int index = Array.FindIndex(array, row => row.Tier == tvm.Tier);
+                    while (cls.Min > teacher.points) // points can't be lower then D.min or teacher is garbage
+                    {
+                        index += 1;
+                        cls = array[index];
+                    }
+                }
+                else if (cls.Max < teacher.points)
+                {
+                    var array = _context.Classes.ToArray<Class>();
+                    int index = Array.FindIndex(array, row => row.Tier == tvm.Tier);
+                    while (cls.Max < teacher.points) // points can't be higher then D.max or teacher is too good
+                    {
+                        index -= 1;
+                        cls = array[index];
+                    }
+                }*/
+                teacher.Tier = true_class.Tier;
+                ///----------------------------------------------------------------------------
+               
                 _context.Update(user);
                 _context.Update(teacher);
                 await _hubContext.Clients.All.SendAsync("Change", teacher.points.ToString(), teacher.Name, teacher.Subject);

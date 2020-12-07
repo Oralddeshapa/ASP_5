@@ -34,10 +34,11 @@ namespace TeaChair
                     var services = scope.ServiceProvider;
                     var userManager = services.GetRequiredService<UserManager<User>>();
                     var logging = services.GetRequiredService<ILogger<SeedData>>();
+                    var rolemanager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
                     try
                     {
-                        SeedData.Initialize(services, userManager, logging);
+                        SeedData.Initialize(services, userManager, logging, rolemanager);
                     }
                     catch (Exception ex)
                     {

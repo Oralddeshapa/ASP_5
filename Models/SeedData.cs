@@ -14,7 +14,7 @@ namespace TeaChair.Models
 {
     public class SeedData
     {
-        public static async void Initialize(IServiceProvider serviceProvider, UserManager<User> userManager, ILogger<SeedData> logger)
+        public static async void Initialize(IServiceProvider serviceProvider, UserManager<User> userManager, ILogger<SeedData> logger, RoleManager<IdentityRole> roleManager)
         {
             Random rand = new Random();
 
@@ -34,7 +34,8 @@ namespace TeaChair.Models
                             Name = "Kalugina",
                             ReleaseDate = DateTime.Parse("1989-2-12"),
                             Subject = "Math",
-                            Tier = "SSS"
+                            Tier = "SS",
+                            points = 4010
                         },
 
                         new Teacher
@@ -42,7 +43,8 @@ namespace TeaChair.Models
                             Name = "Disco-Shuman ",
                             ReleaseDate = DateTime.Parse("1984-3-13"),
                             Subject = "Philosophy",
-                            Tier = "A"
+                            Tier = "A",
+                            points = 500
                         },
 
                         new Teacher
@@ -50,7 +52,8 @@ namespace TeaChair.Models
                             Name = "Anisimov",
                             ReleaseDate = DateTime.Parse("1986-2-23"),
                             Subject = "Comedy",
-                            Tier = "C"
+                            Tier = "C",
+                            points = 100
                         }
 
                     );

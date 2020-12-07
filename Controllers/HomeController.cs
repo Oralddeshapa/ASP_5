@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -13,16 +14,28 @@ namespace TeaChair.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, RoleManager<IdentityRole> roleManager)
         {
             _logger = logger;
             _logger.LogDebug(1, "NLog injected into HomeController");
+            _roleManager = roleManager;
         }
 
-        public IActionResult Index(CurrentTimeService cts)//Count counter, CounterServ cs
+        public async Task<IActionResult> Index(CurrentTimeService cts)//Count counter, CounterServ cs
         {
             ViewData["time"] = cts.GetTime();
+            if (_roleManager.Roles.Any())
+            {
+
+            }
+            else
+            {
+                await _roleManager.CreateAsync(new IdentityRole("user"));
+                await _roleManager.CreateAsync(new IdentityRole("admin"));
+                await _roleManager.CreateAsync(new IdentityRole("moder"));
+            }
             /*
             ViewData["count_1"] = counter.Value;
             ViewData["count_2"] = cs.Counter.Value;
