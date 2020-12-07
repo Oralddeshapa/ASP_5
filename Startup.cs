@@ -31,6 +31,7 @@ namespace TeaChair
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
             Count count = new Count();
             services.AddSingleton<ICounter>(count);
             services.AddTransient<CurrentTimeService>();
@@ -49,7 +50,8 @@ namespace TeaChair
             services.AddSignalR().AddHubOptions<ChatHub>(options =>
             {
                 options.EnableDetailedErrors = true;
-            });
+            });              
+
             services.AddControllersWithViews();
         }
 

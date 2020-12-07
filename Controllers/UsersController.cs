@@ -24,7 +24,48 @@ namespace TeaChair.Controllers
             _logger.LogDebug(1, "NLog injected into UserController");
         }
 
-            public IActionResult Index() => View(_userManager.Users.ToList());
+        public async Task<IActionResult> Index()
+        {
+            //
+            if (!_userManager.Users.Any())
+            {
+                Random rand = new Random();
+                User admin = new User
+                {
+                    Points = 85350155,
+                    Email = "Orald" + "@bsuir.by",
+                    UserName = "Orald"
+                };
+                var result = await _userManager.CreateAsync(admin, "123456");
+                if (result.Succeeded)
+                {
+                    await _userManager.AddToRoleAsync(admin, "user");
+                    await _userManager.AddToRoleAsync(admin, "moder");
+                    await _userManager.AddToRoleAsync(admin, "admin");
+                }
+
+                for (int i = 0; i < 20; i++)
+                {
+                    int tom = 85350100 + i;
+                    string tim = tom.ToString();
+                    User user_1 =
+                        new User
+                        {
+                            Points = 85350100 + i,
+                            Email = tim + "@bsuir.by",
+                            UserName = tim
+                        };
+                    int pass = (85350100 + i) / (i + 1) * i;
+                    result = await _userManager.CreateAsync(user_1, pass.ToString());
+                    if (result.Succeeded)
+                    {
+                        await _userManager.AddToRoleAsync(user_1, "user");
+                    }
+                }
+            }
+            //
+            return View(_userManager.Users.ToList());
+        }
 
         [Authorize(Roles = "admin")]
         public IActionResult Create() => View();
@@ -32,12 +73,16 @@ namespace TeaChair.Controllers
             [HttpPost]
             [Authorize(Roles = "admin")]
         public async Task<IActionResult> Create(CreateUserViewModel model)
-            {
+            {             
                 if (ModelState.IsValid)
-                {
+                {  
                     User user = new User { Email = model.Email, UserName = model.Email, Points = model.Points };
                     var result = await _userManager.CreateAsync(user, model.Password);
-                    if (result.Succeeded)
+
+                //
+                //
+
+                if (result.Succeeded)
                     {
                         return RedirectToAction("Index");
                     }

@@ -180,6 +180,9 @@ namespace TeaChair.Controllers
             var teacher = await _context.Teachers
                 .FirstOrDefaultAsync(m => m.Id == id);
 
+           // var cls = await _context.Classes
+                //.FirstOrDefaultAsync(m => m.Tier == teacher.Tier);
+
             TeacherViewModel tvm = new TeacherViewModel(teacher);
             if (teacher == null)
             {

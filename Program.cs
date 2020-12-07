@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using TeaChair.Models;
 using Azure.Identity;
 using NLog.Web;
+using Microsoft.AspNetCore.Identity;
 
 namespace TeaChair
 {
@@ -24,17 +25,19 @@ namespace TeaChair
             {
 
                 logger.Debug("init main");
-                logger.Error("Test error");
+                logger.Error("Test error");              
 
                 var host = CreateHostBuilder(args).Build();
 
                 using (var scope = host.Services.CreateScope())
                 {
                     var services = scope.ServiceProvider;
+                    var userManager = services.GetRequiredService<UserManager<User>>();
+                    var logging = services.GetRequiredService<ILogger<SeedData>>();
 
                     try
                     {
-                        SeedData.Initialize(services);
+                        SeedData.Initialize(services, userManager, logging);
                     }
                     catch (Exception ex)
                     {
@@ -71,5 +74,31 @@ namespace TeaChair
               logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
           })
           .UseNLog();
+
+        public static async Task Ini(UserManager<User> userManager, NLog.Logger logger)
+        {
+            User admin = new User
+            {
+                Points = 85350155,
+                Email = "Orald" + "@bsuir.by",
+                UserName = "Orald"
+            };
+            IdentityResult result = await userManager.CreateAsync(admin, "123456");
+            logger.Debug(result.ToString());
+            if (result.Succeeded)
+            {
+                logger.Debug("Admin created");
+                await userManager.AddToRoleAsync(admin, "user");
+                await userManager.AddToRoleAsync(admin, "moder");
+                await userManager.AddToRoleAsync(admin, "admin");
+            }
+            else
+            {
+                foreach (var error in result.Errors)
+                {
+                    logger.Debug( error.Description);
+                }
+            }
+        }
     }
 }
