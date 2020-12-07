@@ -29,19 +29,22 @@
                             <li class="navbar-nav navbar-right">
                                 <a class="nav-link text-dark" asp-controller="Roles" asp-action="Index">Roles</a>
                             </li>
+                            <li class="navbar-nav navbar-right">
+                                <a class="nav-link text-dark" asp-controller="Class" asp-action="Index">Classes</a>
+                            </li>
                         }
                         @using TeaChair.Services
                         <li class="nav-item">
                             @inject CurrentTimeService cts
-                            @{ 
-                            <a class="nav-link text-dark">@(cts.GetTime())</a>
-                                }
+                            @{
+                                <a class="nav-link text-dark">@(cts.GetTime())</a>
+                            }
                         </li>
                         <li class="nav-item">
-                            @inject ICounter CounterServ         
+                            @inject ICounter CounterServ
                             @{
-                            <a class="nav-link text-dark">@(CounterServ.Value)</a>
-                                }
+                                <a class="nav-link text-dark">@(CounterServ.Value)</a>
+                            }
                         </li>
                     </ul>
                 </div>
