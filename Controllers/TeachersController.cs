@@ -226,7 +226,7 @@ namespace TeaChair.Controllers
                 mfn.Points -= Math.Abs(tvm.New_points);
 
                 ///----------------------------------------------------------------------------
-                var true_class = _context.Classes.Where(o => ((o.Min < teacher.points) && (o.Max > teacher.points))).First();
+                var true_class = _context.Classes.Where(o => ((o.Min <= teacher.points) && (o.Max >= teacher.points))).First();
 
                 //await _context.Classes.FirstOrDefaultAsync(o => ((o.Min < user.Points) && (o.Max > user.Points)));
                 /*if (cls.Min > teacher.points)
