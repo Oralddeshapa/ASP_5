@@ -21,5 +21,7 @@ namespace TeaChair.Data
 
         public DbSet<Class> Classes { get; set; }
 
+        public DbSet<LogForDonate> Logs { get; set; }
+
     }
 }

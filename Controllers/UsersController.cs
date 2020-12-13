@@ -137,9 +137,9 @@ namespace TeaChair.Controllers
                     }
                 }
                 return View(model);
-            }
+        }
 
-            [HttpPost]
+        [HttpPost]
         [Authorize(Roles = "admin")]
         public async Task<ActionResult> Delete(string id)
             {

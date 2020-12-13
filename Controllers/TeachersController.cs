@@ -107,7 +107,7 @@ namespace TeaChair.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "moder,admin")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ReleaseDate,Subject,Tier")] Teacher teacher)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ReleaseDate,Subject,")] Teacher teacher)
         {
             if (id != teacher.Id)
             {
@@ -251,7 +251,12 @@ namespace TeaChair.Controllers
                 }*/
                 teacher.Tier = true_class.Tier;
                 ///----------------------------------------------------------------------------
-               
+                LogForDonate log = new LogForDonate();
+                log.Points = tvm.New_points;
+                log.Name = user.UserName;
+                log.Teacher = tvm.Name;
+                log.LogDate = DateTime.Now;
+                _context.Logs.Add(log);
                 _context.Update(user);
                 _context.Update(teacher);
                 await _hubContext.Clients.All.SendAsync("Change", teacher.points.ToString(), teacher.Name, teacher.Subject);
