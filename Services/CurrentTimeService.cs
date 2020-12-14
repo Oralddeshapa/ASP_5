@@ -8,6 +8,11 @@ namespace TeaChair.Services
 {
     public class CurrentTimeService
     {
-        public string GetTime() => DateTime.Now.ToString("hh:mm:ss");
+        public string GetTime(int k)
+        {   
+            DateTime dt = DateTime.Now;
+            dt = dt.AddHours((double)k);
+            return  dt.ToString("hh:mm:ss");
+        }
     }
 }

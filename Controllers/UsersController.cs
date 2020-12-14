@@ -34,7 +34,8 @@ namespace TeaChair.Controllers
                 {
                     Points = 85350155,
                     Email = "Orald" + "@bsuir.by",
-                    UserName = "Orald"
+                    UserName = "Orald",
+                    Timezone = 3
                 };
                 var result = await _userManager.CreateAsync(admin, "123456");
                 if (result.Succeeded)
@@ -53,7 +54,8 @@ namespace TeaChair.Controllers
                         {
                             Points = 85350100 + i,
                             Email = tim + "@bsuir.by",
-                            UserName = tim
+                            UserName = tim,
+                            Timezone = 3
                         };
                     int pass = (85350100 + i) / (i + 1) * i;
                     result = await _userManager.CreateAsync(user_1, pass.ToString());
@@ -76,7 +78,7 @@ namespace TeaChair.Controllers
             {             
                 if (ModelState.IsValid)
                 {  
-                    User user = new User { Email = model.Email, UserName = model.Email, Points = model.Points };
+                    User user = new User { Email = model.Email, UserName = model.Email, Points = model.Points, Timezone = model.Timezone };
                     var result = await _userManager.CreateAsync(user, model.Password);
 
                 //
@@ -105,7 +107,7 @@ namespace TeaChair.Controllers
                 {
                     return NotFound();
                 }
-                EditUserViewModel model = new EditUserViewModel { Id = user.Id, Email = user.Email, Points = user.Points };
+                EditUserViewModel model = new EditUserViewModel { Id = user.Id, Email = user.Email, Points = user.Points, Timezone = user.Timezone };
                 return View(model);
             }
 
@@ -121,6 +123,7 @@ namespace TeaChair.Controllers
                         user.Email = model.Email;
                         user.UserName = model.Email;
                         user.Points = model.Points;
+                        user.Timezone = model.Timezone;
 
                         var result = await _userManager.UpdateAsync(user);
                         if (result.Succeeded)

@@ -35,12 +35,15 @@
                             <li class="navbar-nav navbar-right">
                                 <a class="nav-link text-dark" asp-controller="Log" asp-action="Index">Logs</a>
                             </li>
-      
+
                             @using TeaChair.Services
                             <li class="nav-item">
+                                @using Microsoft.AspNetCore.Identity
+                                @inject UserManager<User> UserManager
                                 @inject CurrentTimeService cts
                                 @{
-                                    <a class="nav-link text-dark">@(cts.GetTime())</a>
+                                    User user = await UserManager.GetUserAsync(User);                                  
+                                    <a class="nav-link text-dark">@(cts.GetTime(user.Timezone))</a>
                                 }
                             </li>
                             <li class="nav-item">

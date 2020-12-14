@@ -11,12 +11,14 @@ namespace TeaChair.ViewModels
         public string Email { get; set; }
         public string Password { get; set; }
         public int Points { get; set; }
+        public int Timezone { get; set; }
     }
     public class EditUserViewModel
     {
         public string Id { get; set; }
         public string Email { get; set; }
         public int Points { get; set; }
+        public int Timezone { get; set; }
     }
 
     public class ChangePasswordViewModel
@@ -46,5 +48,11 @@ namespace TeaChair.ViewModels
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
         public string PasswordConfirm { get; set; }
+
+        [Required]
+        [Display(Name = "TimeZone")]
+        public int Timezone { get; set; }
+
+        
     }
 }

@@ -25,7 +25,7 @@ namespace TeaChair.Controllers
 
         public async Task<IActionResult> Index(CurrentTimeService cts)//Count counter, CounterServ cs
         {
-            ViewData["time"] = cts.GetTime();
+            ViewData["time"] = cts.GetTime(0);
             if (_roleManager.Roles.Any())
             {
 
@@ -58,7 +58,7 @@ namespace TeaChair.Controllers
                 {
                     var viewName = statusCode.ToString();
                     ErrorViewModel evm = new ErrorViewModel();
-                    evm.Time = cts.GetTime();
+                    evm.Time = cts.GetTime(0);
                     evm.SratusCode = Activity.Current.Id;
                     evm.RequestId = statusCode.Value.ToString();
                     return View(evm);

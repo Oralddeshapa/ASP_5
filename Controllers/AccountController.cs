@@ -34,7 +34,7 @@ namespace TeaChair.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = new User { Email = (string)model.Email, UserName = (string)model.Email, Points = (int)model.Points };
+                User user = new User { Email = (string)model.Email, UserName = (string)model.Email, Points = (int)model.Points, Timezone = (int)model.Timezone };
               
                 var result = await _userManager.CreateAsync(user, (string)model.Password);
                 if (result.Succeeded)

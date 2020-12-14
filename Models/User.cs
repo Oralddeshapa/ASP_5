@@ -9,5 +9,7 @@ namespace TeaChair.Models
     public class User : IdentityUser
     {
         public int Points { get; set; }
+
+        public int Timezone { get; set; }
     }
 }

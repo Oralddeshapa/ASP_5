@@ -22,7 +22,12 @@
         <input asp-for="PasswordConfirm" />
         <span asp-validation-for="PasswordConfirm"></span>
     </div>
-        <div>
-            <input type="submit" value="Register" />
-        </div>
-    </form>
+    <div>
+        <label asp-for="Timezone"></label><br />
+        <input asp-for="Timezone" />
+        <span asp-validation-for="Timezone"></span>
+    </div>
+    <div>
+        <input type="submit" value="Register" />
+    </div>
+</form>
